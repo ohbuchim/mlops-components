@@ -1,0 +1,21 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor3",
+            "Effect": "Allow",
+            "Action": [
+                "ecr:*",
+                "codecommit:*",
+                "states:*",
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "sts:AssumeRole",
+                "s3:*",
+                "iam:PassRole"
+            ],
+            "Resource": "*"
+        }
+    ]
+}

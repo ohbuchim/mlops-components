@@ -1,0 +1,27 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "codecommit:CancelUploadArchive",
+                "codecommit:GetBranch",
+                "codecommit:GetCommit",
+                "codecommit:GetRepository",
+                "codecommit:GetUploadArchiveStatus",
+                "codecommit:UploadArchive",
+                "ec2:*",
+                "autoscaling:*",
+                "cloudwatch:*",
+                "s3:*",
+                "codebuild:BatchGetBuilds",
+                "codebuild:StartBuild",
+                "codebuild:BatchGetBuildBatches",
+                "codebuild:StartBuildBatch",
+                "ecr:DescribeImages",
+                "sts:AssumeRole"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        }
+    ]
+}

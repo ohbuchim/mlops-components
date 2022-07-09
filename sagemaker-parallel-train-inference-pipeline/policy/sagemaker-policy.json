@@ -25,7 +25,10 @@
                 "lambda:UpdateFunctionConfiguration",
                 "lambda:AddPermission",
                 "lambda:DeleteFunction",
-                "SNS:DeleteTopic"
+                "SNS:DeleteTopic",
+                "codebuild:*",
+                "codecommit:*",
+                "codepipeline:*"
             ],
             "Resource": "*"
         }
