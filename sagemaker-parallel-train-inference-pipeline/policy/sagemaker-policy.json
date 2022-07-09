@@ -26,6 +26,8 @@
                 "lambda:AddPermission",
                 "lambda:DeleteFunction",
                 "SNS:DeleteTopic",
+                "SNS:ListSubscriptions",
+                "SNS:Unsubscribe",
                 "codebuild:*",
                 "codecommit:*",
                 "codepipeline:*"
