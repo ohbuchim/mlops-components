@@ -89,7 +89,7 @@ def create_prep_step(params, prep_processor, execution_input):
     input_dir = '/opt/ml/processing/input/data'
     output_dir = '/opt/ml/processing/output'
 
-    SCRIPT_LOCATION = "code/prep"
+    SCRIPT_LOCATION = "code/sagemaker/prep"
 
     code_s3_path = sagemaker_session.upload_data(
         SCRIPT_LOCATION,
@@ -158,7 +158,7 @@ def create_training_step(params, train_processor, execution_input):
     input_dir = '/opt/ml/processing/input/data'
     output_dir = '/opt/ml/processing/output'
 
-    SCRIPT_LOCATION = "code/train"
+    SCRIPT_LOCATION = "code/sagemaker/train"
 
     code_s3_path = sagemaker_session.upload_data(
         SCRIPT_LOCATION,
@@ -227,7 +227,7 @@ def create_pred_step(params, pred_processor, execution_input):
     input_dir = '/opt/ml/processing/input/data'
     output_dir = '/opt/ml/processing/output'
 
-    SCRIPT_LOCATION = "code/pred"
+    SCRIPT_LOCATION = "code/sagemaker/pred"
 
     code_s3_path = sagemaker_session.upload_data(
         SCRIPT_LOCATION,
@@ -295,7 +295,7 @@ def create_post_step(params, post_processor, execution_input):
     input_dir = '/opt/ml/processing/input/data'
     output_dir = '/opt/ml/processing/output'
 
-    SCRIPT_LOCATION = "code/post"
+    SCRIPT_LOCATION = "code/sagemaker/post"
 
     code_s3_path = sagemaker_session.upload_data(
         SCRIPT_LOCATION,
