@@ -19,6 +19,7 @@ ECR_PREP_REPO_URI = os.environ['ECR_PREP_REPO_URI']
 ECR_TRAIN_REPO_URI = os.environ['ECR_TRAIN_REPO_URI']
 BUCKET_NAME = os.environ['BUCKET_NAME']
 PREFIX = os.environ['PREFIX']
+METRIC_THRESHOLD = os.environ['METRIC_THRESHOLD']
 
 
 def get_latest_image_uri(repo_uri):
@@ -63,7 +64,7 @@ def lambda_handler(event, context):
 
     pred_args = [
             '--num-of-dataset', str(num_of_segment),
-            '--metrics-threshold', '10000',
+            '--metric-threshold', METRIC_THRESHOLD,
             '--latest-model-path', train_output_data,
             '--previous-model-path', train_output_data
         ]

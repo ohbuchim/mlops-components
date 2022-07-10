@@ -101,8 +101,8 @@ if __name__ == "__main__":
     # Data and model checkpoints directories
     parser.add_argument('--num-of-dataset', type=int, default=1, metavar='N',
                         help='N of dataset')
-    parser.add_argument('--metrics-threshold', type=float, default=1, metavar='N',
-                        help='metrics-threshold')
+    parser.add_argument('--metric-threshold', type=float, default=1, metavar='N',
+                        help='metric-threshold')
     parser.add_argument('--latest-model-path', type=str, default='', metavar='N',
                         help='latest-model-path')
     parser.add_argument('--previous-model-path', type=str, default='', metavar='N',
@@ -144,7 +144,7 @@ if __name__ == "__main__":
             model_id,
             args.latest_model_path,
             args.previous_model_path,
-            args.metrics_threshold,
+            args.metric_threshold,
             args.num_of_dataset,
             model_path
     )
