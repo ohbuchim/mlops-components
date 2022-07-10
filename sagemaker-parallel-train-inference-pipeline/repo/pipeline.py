@@ -105,6 +105,7 @@ def create_lambda_function(function_name, file_name, role_arn, handler_name,
             Environment={
                 'Variables': envs
             },
+            Handler=handler_name+'.lambda_handler'
         )
         time.sleep(10)
         response = lambda_client.update_function_code(
