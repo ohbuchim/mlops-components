@@ -41,8 +41,11 @@ def get_parameters():
         params['prep-image-name'] = config['config']['prep-image-name']
         params['train-image-name'] = config['config']['train-image-name']
         params['notification-lambda-name'] = config['config']['notification-lambda-name']
+        params['startsfn-lambda-name'] = config['config']['startsfn-lambda-name']
+        params['startsfn-lambda-role-arn'] = config['config']['startsfn-lambda-role-arn']
         params['sns-topic-arn'] = config['config']['sns-topic-arn']
         params['num-of-segment'] = config['config']['num-of-segment']
+        params['metric-threshold'] = config['config']['metric-threshold']
 
         print('------------------')
         print(params)
@@ -76,6 +79,58 @@ def create_prep_processing(params, sagemaker_role):
         network_config=None
     )
     return prep_processor
+
+
+def function_exists(function_name):
+    lambda_client = boto3.client('lambda')
+    try:
+        lambda_client.get_function(
+            FunctionName=function_name,
+        )
+        return True
+    except Exception as e:
+        return False
+
+
+def create_lambda_function(function_name, file_name, role_arn, handler_name,
+                           envs={}, py_version='python3.9'):
+
+    with open(file_name+'.zip', 'rb') as f:
+        zip_data = f.read()
+
+    if function_exists(function_name):
+
+        response = lambda_client.update_function_configuration(
+            FunctionName=function_name,
+            Environment={
+                'Variables': envs
+            },
+        )
+        time.sleep(10)
+        response = lambda_client.update_function_code(
+            FunctionName=function_name,
+            ZipFile=zip_data,
+            Publish=True,
+        )
+
+    else:
+        response = lambda_client.create_function(
+            FunctionName=function_name,
+            Role=role_arn,
+            Handler=handler_name+'.lambda_handler',
+            Runtime=py_version,
+            Code={
+                'ZipFile': zip_data
+            },
+            Environment={
+                'Variables': envs
+            },
+            Timeout=60*5,  # 5 minutes
+            MemorySize=128,  # 128 MB
+            Publish=True,
+            PackageType='Zip',
+        )
+    return response['FunctionArn']
 
 
 def create_prep_step(params, prep_processor, execution_input):
@@ -453,5 +508,22 @@ if __name__ == '__main__':
             "PostOutput": str,
         }
     )
+
+    envs = {
+        'SNS_TOPIC_ARN': params['sns-topic-arn'],
+        'STEPFUNCTION_ARN': params['sfn-workflow-arn'],
+        'BUCKET_NAME': params['bucket-name'],
+        'PREFIX': params['s3-prefix'],
+        'NUM_OF_SEGMENT': str(params['num-of-segment']),
+        'METRIC_THRESHOLD': str(params['metric-threshold'])
+    }
+    lambda_startsfn_function_arn = create_lambda_function(
+                                    params['startsfn-lambda-name'],
+                                    params['startsfn-lambda-name'],
+                                    params['startsfn-lambda-role-arn'],
+                                    'index',
+                                    envs,
+                                    py_version='python3.8')
+    print(f'{lambda_startsfn_function_arn} has been updated.')
 
     branching_workflow = create_sfn_workflow(params)

@@ -18,5 +18,7 @@ phases:
       - . ./setenv.sh
       # Build Docker images and push to ECR
       - . ./docker/ecr-regist-images.sh
+      # Make source.zip for lambda function
+      - . ./make-source-zip.sh
       # Execute ML workflow
       - python $SRC
