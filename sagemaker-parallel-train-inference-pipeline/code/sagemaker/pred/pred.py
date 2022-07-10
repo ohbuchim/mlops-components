@@ -62,11 +62,11 @@ def get_pretrained_model(model_id, latest_model_path,
     previous_model_prefix = previous_model_path[6+len(bucket_name):]
 
     if latest_model_is_best(latest_model_path, num_of_dataset, thresh):
-        print('The latest models are used.')
         prefix = latest_model_prefix
+        print(f'The latest models are used: {prefix}/{model_id}')
     else:
-        print('The previous models are used.')
         prefix = previous_model_prefix
+        print(f'The previous models are used: {prefix}/{model_id}')
 
     # モデル単位で評価値を判定する場合
     # 最新モデルの評価値が閾値よりもよければ最新モデルを使ってバッチ推論
@@ -139,7 +139,7 @@ if __name__ == "__main__":
 
     model_path = '/opt/ml/processing/input/model'
     os.makedirs(model_path)
-    model_id = str(int(current_host.split('-')[1])-1).zfill(2)
+    model_id = pred_file.split('_')[-1].split('.')[0]
     model_prefix = get_pretrained_model(
             model_id,
             args.latest_model_path,
@@ -148,7 +148,7 @@ if __name__ == "__main__":
             args.num_of_dataset,
             model_path
     )
-    
+
     with open(os.path.join(output_data_path, f'{model_id}.log'), 'w') as f:
         f.write(model_prefix)
 
