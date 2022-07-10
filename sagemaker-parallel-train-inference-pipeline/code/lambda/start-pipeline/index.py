@@ -19,15 +19,6 @@ PREFIX = os.environ['PREFIX']
 METRIC_THRESHOLD = os.environ['METRIC_THRESHOLD']
 
 
-def get_latest_image_uri(repo_uri):
-    repo_name = repo_uri.split('/')[-1]
-    iterator = client_paginator.paginate(repositoryName=repo_name)
-    filter_iterator = iterator.search(jmespath_expression)
-    tag = list(filter_iterator)[0]
-    latest_image_uri = f'{repo_uri}:{tag}'
-    return latest_image_uri
-
-
 def publish_message(sns_topic_arn, message):
     response = sns_client.publish(
         TopicArn=sns_topic_arn,
@@ -96,7 +87,7 @@ def lambda_handler(event, context):
     region = STEPFUNCTION_ARN.split(':')[3]
     execution_arn = response['executionArn']
     workflow_link = f'https://{region}.console.aws.amazon.com/states/home?region={region}#/executions/details/{execution_arn}'
-    
+
     message = f'''message: Pipeline Started.
     {workflow_link}'''
 
