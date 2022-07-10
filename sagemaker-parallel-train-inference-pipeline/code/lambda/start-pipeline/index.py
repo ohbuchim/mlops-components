@@ -1,4 +1,3 @@
-import yaml
 import boto3
 import json
 from datetime import datetime
@@ -15,8 +14,6 @@ client_paginator = ecr_client.get_paginator('describe_images')
 JST = tz.gettz('Asia/Tokyo')
 
 STEPFUNCTION_ARN = os.environ['STEPFUNCTION_ARN']
-ECR_PREP_REPO_URI = os.environ['ECR_PREP_REPO_URI']
-ECR_TRAIN_REPO_URI = os.environ['ECR_TRAIN_REPO_URI']
 BUCKET_NAME = os.environ['BUCKET_NAME']
 PREFIX = os.environ['PREFIX']
 METRIC_THRESHOLD = os.environ['METRIC_THRESHOLD']
@@ -35,7 +32,7 @@ def publish_message(sns_topic_arn, message):
     response = sns_client.publish(
         TopicArn=sns_topic_arn,
         Message=message,
-        Subject=f"ML Pipeline Started."
+        Subject="ML Pipeline Started."
     )
 
     return response
@@ -44,7 +41,8 @@ def publish_message(sns_topic_arn, message):
 def lambda_handler(event, context):
     print(event)
     bucket = event['Records'][0]['s3']['bucket']['name']
-    key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
+    key = urllib.parse.unquote_plus(
+            event['Records'][0]['s3']['object']['key'], encoding='utf-8')
 
     num_of_segment = 2
     sfn_timestamp = datetime.now(JST).strftime('%Y%m%d')
