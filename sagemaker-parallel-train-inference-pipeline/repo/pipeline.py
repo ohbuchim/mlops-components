@@ -44,12 +44,6 @@ def get_parameters():
         params['sns-topic-arn'] = config['config']['sns-topic-arn']
         params['num-of-segment'] = config['config']['num-of-segment']
 
-        # params['eval-job-name'] = os.environ['EVAL_JOB_NAME']
-        # params['eval-image-uri'] = os.environ['EVALUATE_IMAGE_URI']
-        # params['eval-data-path'] = config['evaluate']['data-path']
-        # params['eval-result-path'] = config['evaluate']['result-path']
-        # params['lambda-func-name'] = config['postprocess']['lambda-func-name']
-
         print('------------------')
         print(params)
     return params
