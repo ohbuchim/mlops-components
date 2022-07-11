@@ -41,3 +41,33 @@ root
 1. 00-prepare-container-images.ipynb
 2. 01-sagemaker-training-inference-pipeline.ipynb
 3. 02-create-ml-pipeline-using-codepipeline.ipynb
+
+## サンプルの使い方
+
+ここからは、このサンプルの使い方を詳しく説明します。
+
+### SageMaker で利用するコンテナイメージのビルドと ECR への push
+
+00-prepare-container-images.ipynb を開き、一番初めのセルの `user_name` にご自身の名前（アルファベットで）を記載し、上から順にセルを実行してください。このノートブックでは、SageMaker Processing で使用するコンテナイメージを 2 つビルドして ECR に push しています。それぞれデータ準備および後処理用のコンテナイメージと、モデルの学習および推論用のコンテナイメージです。
+
+### ML パイプラインの作成
+
+01-sagemaker-training-inference-pipeline.ipynb を開き、ノートブックに記載の手順を実行していきます。冒頭の、ブラウザのタブのリロードとカーネルの再起動の手順を忘れずに実行してください。このノートブックでは、S3 へのファイルアップロードをトリガーにして実行される Step Functions Workflow を構築します。このノートブックを実行すると、今回作成したい ML パイプライン全体を作成することができます。
+
+### ML パイプラインを更新するパイプラインの作成
+
+02-create-ml-pipeline-using-codepipeline.ipynb を開き、セルを上から順に実行していきます。このノートブックでは、前のノートブックで作成したコンテナイメージと ML パイプラインを自動的に更新するしくみを作成します。ML パイプラインで使用するインスタンスタイプ、モデル学習の並列数、使用する IAM Role などの各種情報が記載された pipeline-config.yml や、コンテナイメージのビルドと ECR への push を行うシェルスクリプト、Step Functions Data Science SDK を使って ML パイプラインの更新を行う Python スクリプトなどを CodeCommit で管理します。これらのファイルが更新されると、それをトリガーに CodePipeline が起動し、さらに CodeBuild が呼び出されてコンテナイメージの作成と ML パイプラインの更新が実行されます。
+
+## サンプルのカスタマイズ
+
+ここからは、このサンプルをカスタマイズする手順の例を紹介します。
+
+### SageMaker Processing で実行する処理のカスタマイズ
+
+CodeCommit で管理している `code/sagemaker` フォルダ以下にある各 Python ファイルの内容を書き換えます。また、使用したいライブラリがある場合は `docker` フォルダ以下にあるファイルを書き換えて、自身のスクリプトが問題なく動作するコンテナイメージを作成してください。
+
+### ML パイプライン（Step Functions Workflow）のカスタマイズ
+
+CodeCommit で管理している `pipeline.py` を変更して Step Functions Workflow の構築をしてください。試行錯誤段階では、01-sagemaker-training-inference-pipeline.ipynb を使って SageMaker Processing の単体テスト -> Step Functions Workflow の設計 -> Step Functions Workflow の動作確認、の順で実施してからその結果を `pipeline.py` に反映する流れがおすすめです。変更部分が少ない場合は、直接 `pipeline.py` を編集しても問題ありません。
+
+ML パイプライン実行時のパラメタが変化する場合は、上記 `pipeline.py` の他に、同じく CodeCommit で管理している `code/lambda/start-pipeline/index.py` を変更してください。
