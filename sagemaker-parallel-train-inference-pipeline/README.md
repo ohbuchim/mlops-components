@@ -8,6 +8,10 @@ Raw Data 保存用 S3 バケットの、Raw Data と同じフォルダに拡張�
 
 <img src="workflow2.png" width="80%">
 
+このサンプルでは、上記 ML パイプラインを更新するためのパイプラインも作成します。AWS CodeCommit にファイルが push されると、それをトリガーにして AWS CodePipeline が実行され、CodeCommit のファイルを使って ML パイプラインが更新されます。
+
+<img src="workflow3.png" width="80%">
+
 ## 前提条件
 
 このサンプルは、IAM Role や IAM Policy を作成する権限を持つ IAM User で実行してください。ノートブックは Amazon SageMaker ノートブックインスタンスでの動作を確認しています。ノートブックインスタンスタイプは t3.medium でも動作しますが、コンテナイメージのビルド時間を短縮したい場合は m5.xlarge をご利用ください。コンテナイメージのビルドと Amazon ECR への push に t3.medium だと 20 分程度、m5.xlarge だと 10 分程度かかります。
