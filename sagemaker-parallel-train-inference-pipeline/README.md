@@ -70,4 +70,8 @@ CodeCommit で管理している `code/sagemaker` フォルダ以下にある各
 
 CodeCommit で管理している `pipeline.py` を変更して Step Functions Workflow の構築をしてください。試行錯誤段階では、01-sagemaker-training-inference-pipeline.ipynb を使って SageMaker Processing の単体テスト -> Step Functions Workflow の設計 -> Step Functions Workflow の動作確認、の順で実施してからその結果を `pipeline.py` に反映する流れがおすすめです。変更部分が少ない場合は、直接 `pipeline.py` を編集しても問題ありません。
 
-ML パイプライン実行時のパラメタが変化する場合は、上記 `pipeline.py` の他に、同じく CodeCommit で管理している `code/lambda/start-pipeline/index.py` を変更してください。
+ML パイプライン実行時のパラメタが変化する場合は、上記 `pipeline.py` の他に、同じく CodeCommit で管理している `code/lambda/start-pipeline/index.py` を変更してください。このファイルを変更して CodeCommit に push すると、`pipeline.py` によって Lambda 関数が更新されます。
+
+### ML パイプライン実行状況の通知内容のカスタマイズ
+
+このサンプルでは、ML パイプライン実行状況通知用の Lambda 関数の CodeCommit での管理に含めていますが、Lambda 関数の更新処理を `pipeline.py` に入れていません。そのため、ML パイプライン実行状況通知用の Lambda 関数を更新したい場合は `code/lambda/notification/index.py` を変更してから 01-sagemaker-training-inference-pipeline.ipynb の「ステータス通知用 Lambda 関数の準備」の部分を実行してください。この Lambda 関数の更新も自動化したい場合は、`pipeline.py` における ML パイプライン実行用 Lambda 関数の記述を参考にして `pipeline.py` に記述を追加してください。
