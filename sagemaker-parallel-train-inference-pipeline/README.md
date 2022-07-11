@@ -8,7 +8,7 @@ Raw Data 保存用 S3 バケットの、Raw Data と同じフォルダに拡張�
 
 <img src="workflow2.png" width="80%">
 
-このサンプルでは、上記 ML パイプラインを更新するためのパイプラインも作成します。AWS CodeCommit にファイルが push されると、それをトリガーにして AWS CodePipeline が実行され、CodeCommit のファイルを使って ML パイプラインが更新されます。
+このサンプルでは、上記 ML パイプラインを更新するためのパイプラインも作成します。AWS CodeCommit にファイルが push されると、それをトリガーにして AWS CodePipeline が実行され、CodeCommit のファイルを使って ML パイプラインが更新されます。また、コンテナ関連のファイルが更新されていれば、コンテナイメージのビルドと Amazon ECR への push も実行されます。
 
 <img src="workflow3.png" width="80%">
 
