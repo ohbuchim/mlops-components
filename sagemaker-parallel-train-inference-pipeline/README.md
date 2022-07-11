@@ -79,3 +79,7 @@ ML パイプライン実行時のパラメタが変化する場合は、上記 `
 ### ML パイプライン実行状況の通知内容のカスタマイズ
 
 このサンプルでは、ML パイプライン実行状況通知用の Lambda 関数の CodeCommit での管理に含めていますが、Lambda 関数の更新処理を `pipeline.py` に入れていません。そのため、ML パイプライン実行状況通知用の Lambda 関数を更新したい場合は `code/lambda/notification/index.py` を変更してから 01-sagemaker-training-inference-pipeline.ipynb の「ステータス通知用 Lambda 関数の準備」の部分を実行してください。この Lambda 関数の更新も自動化したい場合は、`pipeline.py` における ML パイプライン実行用 Lambda 関数の記述を参考にして `pipeline.py` に記述を追加してください。
+
+### SageMaker Processing を VPC のなかで実行するようカスタマイズ
+
+`sagemaker.processing.Processor` を作成する際に、パラメタ `network_config` に VPC の設定を追加してください。詳細は [こちらの Amazon SageMaker Python SDK のリファレンス](https://sagemaker.readthedocs.io/en/stable/api/training/processing.html#sagemaker.processing.Processor) をご参照ください。
